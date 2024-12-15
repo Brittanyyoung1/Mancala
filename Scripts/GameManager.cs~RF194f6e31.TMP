@@ -1,0 +1,32 @@
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    public bool isPlayer1Turn = true;
+    public BoardManager boardManager;
+
+    public void HandlePitSelection(PitManager selectedPit)
+    {
+        if (selectedPit.stoneCount == 0)
+        {
+          
+            return;
+        }
+
+        int stonesToDistribute = selectedPit.stoneCount;
+        selectedPit.RemoveStones();
+
+     
+        int currentIndex = boardManager.pits.IndexOf(selectedPit.gameObject);
+        while (stonesToDistribute > 0)
+        {
+            currentIndex = (currentIndex + 1) % boardManager.pits.Count;
+            PitManager nextPit = boardManager.pits[currentIndex].GetComponent<PitManager>();
+            nextPit.AddStone();
+            stonesToDistribute--;
+        }
+
+        // Change player turn
+        isPlayer1Turn = !isPlayer1Turn;
+    }
+}

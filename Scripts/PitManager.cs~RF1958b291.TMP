@@ -1,0 +1,62 @@
+using UnityEngine;
+
+public class PitManager : MonoBehaviour
+{
+    public int stoneCount = 4; 
+    public GameObject stonePrefab; 
+    private GameManager gameManager; 
+
+    void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>(); 
+
+     
+        InitializeStones(stoneCount);
+    }
+
+    void OnMouseDown()
+    {
+        
+        if (gameManager != null)
+        {
+            gameManager.HandlePitClick(this);
+        }
+    }
+
+    public void InitializeStones(int count)
+    {
+        stoneCount = count;
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-0.1f, 0.1f),
+                0.1f,
+                Random.Range(-0.1f, 0.1f)
+            );
+            Instantiate(stonePrefab, transform.position + randomOffset, Quaternion.identity, transform);
+        }
+    }
+
+    public void AddStone()
+    {
+        stoneCount++;
+        Vector3 randomOffset = new Vector3(
+            Random.Range(-0.1f, 0.1f),
+            0.1f,
+            Random.Range(-0.1f, 0.1f)
+        );
+        Instantiate(stonePrefab, transform.position + randomOffset, Quaternion.identity, transform);
+    }
+
+    public void RemoveStones()
+    {
+        stoneCount = 0;
+
+       
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+}

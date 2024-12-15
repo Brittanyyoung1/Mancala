@@ -1,0 +1,45 @@
+using UnityEngine;
+
+public class HandPointer : MonoBehaviour
+{
+    public Camera mainCamera;  // The main camera that views the board
+    public float handHeightOffset = 0.5f;  // Height offset to keep the hand above the board
+
+    void Update()
+    {
+        // Update the position of the hand to follow the mouse cursor every frame
+        FollowMouseCursor();
+
+        // Optional: Add logic for clicking animation
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Play click animation or some effect when the player clicks
+            ClickAction();
+        }
+    }
+
+    void FollowMouseCursor()
+    {
+        // Get the mouse position in screen space and create a ray from the camera
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        // Raycast from the camera to the mouse position to see if it hits the game board
+        if (Physics.Raycast(ray, out hit))
+        {
+            // Move the hand to the hit position, but add some height offset to keep it above the board
+            Vector3 targetPosition = hit.point;
+            targetPosition.y += handHeightOffset;
+
+            // Set the position of the hand to follow the target position
+            transform.position = targetPosition;
+        }
+    }
+
+    void ClickAction()
+    {
+        // Implement what happens when you click
+        // E.g., play an animation or interact with the game
+        Debug.Log("Hand clicked on " + transform.position);
+    }
+}
